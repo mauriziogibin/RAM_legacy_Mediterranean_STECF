@@ -1,0 +1,42 @@
+FAO_subarea,macroarea,fao,gfcm,GSA,GSAname
+37.1,western mediterranean,1.1,balearic,1,Northern Alboran Sea 
+37.1,western mediterranean,1.1,balearic,2,Alboran Island 
+37.1,western mediterranean,1.1,balearic,3,Southern Alboran Sea 
+37.1,western mediterranean,1.1,balearic,4,Algeria 
+37.1,western mediterranean,1.1,balearic,5,Balearic Island 
+37.1,western mediterranean,1.1,balearic,6,Northern Spain 
+37.1,western mediterranean,1.2,gulf lions,7,Gulf of Lions 
+37.1,western mediterranean,1.3,sardinia,8,Corsica Island 
+37.1,western mediterranean,1.3,sardinia,9,Ligurian and North Tyrrhenian Sea 
+37.1,western mediterranean,1.3,sardinia,10,South Tyrrhenian Sea 
+37.1,western mediterranean,1.3,sardinia,11.1,Sardinia (west) 
+37.1,western mediterranean,1.3,sardinia,11.2,Sardinia (east) 
+37.1,western mediterranean,1.3,sardinia,12,Northern Tunisia 
+37.2,central mediterranean,2.2,ionian,13,Gulf of Hammamet 
+37.2,central mediterranean,2.2,ionian,14,Gulf of Gabes 
+37.2,central mediterranean,2.2,ionian,15,Malta Island
+37.2,central mediterranean,2.2,ionian,16,South of Sicily
+37.2,central mediterranean,2.1,adriatic,17,Northern Adriatic
+37.2,central mediterranean,2.1,ionian,18,Southern Adriatic Sea
+37.2,central mediterranean,2.2,ionian,19,Western Ionian Sea
+37.2,central mediterranean,2.2,ionian,20,Eastern Ionian Sea
+37.2,central mediterranean,2.2,ionian,21,Southern Ionian Sea
+37.3,easter mediterranean,3.1,aegean,22,Aegean Sea
+37.3,easter mediterranean,3.1,aegean,23,Crete Island
+37.3,easter mediterranean,3.2,levant,24,North Levant
+37.3,easter mediterranean,3.2,levant,25,Cyprus Island
+37.3,easter mediterranean,3.2,levant,26,South Levant
+37.3,easter mediterranean,3.2,levant,27,Levant
+37.4,black sea,4.1,black sea,28,Marmara Sea
+37.4,black sea,4.2,black sea,29,Black Sea
+37.4,black sea,4.3,black sea,30,Azov Sea
+37.2,central mediterranean,2.2,ionian,12_16,Sicilian Channel
+37.2,central mediterranean,2.2,ionian,15-16,Sicilian Channel
+37.2,central mediterranean,2.1,adriatic,17_18,Adriatic North Ionian
+37.3,easter mediterranean,3.1,aegean,22-23,Aegean Crete Sea
+37.2,central mediterranean,2.1,adriatic,18_19,adriatic N+S
+37.2,central mediterranean,2.1_2.2,adriatic+ionian,17_18_19,adriatic+ionian
+37.1,western mediterranean,1.1_1.2,balearic+lions,01_05_06_07,balearic+lions
+37.1,western mediterranean,1.3,sardinia,09_10_11,Ligurian Tyrrhenian Sardinia 
+37.1,western mediterranean,1.3,sardinia,11,Sardinia
+,,,,,
