@@ -14,6 +14,11 @@ ram <- 'RLSADB_v3.0.mdb'
 
 
 ch <- odbcConnectAccess(ram)
+#this is still not working, I think I am missing some driver ???
+#Warning messages:
+#1: In odbcDriverConnect(con, ...) :
+ # [RODBC] ERROR: state HY000, code -1811, message [Microsoft][ODBC Microsoft Access Driver] Could not find file '(unknown)'.
+#2: In odbcDriverConnect(con, ...) : ODBC connection failed 
 
 q0 <- paste("SELECT * FROM \"stock\"","'", sep="")
 stock <- sqlQuery(ch, q0)
@@ -141,7 +146,7 @@ temp2 $ assessContact <- rep("Giacomo Chato Osio", length(temp2$year))
 
 # Assessment information
 temp2 $ assesscat <- NA
-temp2 $ assessmethod <- substr(unlist(lapply(strsplit(as.character(temp2$assessmethod), " "), "[", 1)),1,5)
+temp2 $ assessmethod <- substr(unlist(lapply(strsplit(as.character(temp2$assessmethod), " "), "[", 1)),1,5) 
 
 # Old assessments performed in VIT were classified as Lenghth Cohort Analysis (LCA), can recode as VIT
 temp2 $ assessmethod <- ifelse( temp2$ assessmethod == "LCA", "VIT", temp2 $ assessmethod)
@@ -166,7 +171,7 @@ save(temp2, file = "C:/ram_med/workspace/Mediterranean_RAM_AllStocks_03_03_2016.
 
 
 unique(paste(temp2$stockid, temp2$ref_point))
-
+#I don't understand why you created this med_units, but might come afterwards
 med_units <- data.frame(stock = unique(paste(temp2$stockid, temp2$assessmethod, sep=" ")),
           R =   rep(NA, length(unique(paste(temp2$stockid, temp2$assessmethod)))),
           TC =  rep(NA, length(unique(paste(temp2$stockid, temp2$assessmethod)))),
@@ -178,19 +183,20 @@ med_units$assessmethod  <- sapply(strsplit(as.character(med_units$stock), ""), f
 
 med_units[,2:5] <- ifelse(med_units$assessmethod == "XSA", c("E03","MT","MT","1/yr"), NA )
 
-apply(med_units[,2:5], FUN= ifelse(med_units$assessmethod == "XSA", c("E03","MT","MT","1/yr"), NA ))
+#this next command is not working,I would expect it to be other units for the other assessmethods, right?:
+#apply(med_units[,2:5], FUN= ifelse(med_units$assessmethod == "XSA", c("E03","MT","MT","1/yr"), NA ))
 
 
 
-
+#didn't recognize stat_hline, but did well with geom_hline, ??
 
 ggplot(temp2, aes(year, F, color = paste(Stock, areacode, sep="")))+ geom_line()+
-  stat_hline(yintercept=1, color="red", linetype="dashed")+
+  geom_hline(yintercept=1, color="red", linetype="dashed")+
   guides(col = guide_legend(ncol = 4), fill = guide_legend(title = "Stock"))
 
 ggsave(last_plot(), file=paste("plots/F_Fmsy_MEDBS_all",Sys.Date(),".png"), width=9, height=6, dpi=300)
 
-
+#got here, but I am a bit blocked with the connection thing!! 
 # Merge with RAM
 
 tall <- merge(temp2, t4,  by = intersect(names(temp2), names(t4)), all=TRUE)
