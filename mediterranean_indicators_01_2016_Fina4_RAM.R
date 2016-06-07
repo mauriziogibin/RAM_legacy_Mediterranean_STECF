@@ -12,18 +12,17 @@ library(ggplotFL)
 
 
 
-setwd("C:/CFP monitoring indicators")
+setwd("~/GitHub/RAM_legacy_Mediterranean_STECF")
 
 ###################################################################################
 # DATA PREPARATION
 ###################################################################################
 
-stocks <- read.csv("Stocks_stecf_2014_12_02_2014.csv")
+stocks <- read.csv("input_data/Stocks_stecf_2014_12_02_2014.csv")
 names(stocks)[9] <- "Method"
 
 # bring in Fmsy estimates
-stocks_msy<-read.csv("Stocks_stecf_2014_summary_V2.csv")
-#stocks_msy<-read.csv("Stocks_stecf_2014_summary.csv")
+stocks_msy<-read.csv("input_data/Stocks_stecf_2014_summary_V2.csv")
 
 #stocks<-stocks[,1:10]
 stocks_msy<-subset(stocks_msy,select=c(GSA, Species, Stock, Fmsy, Assessment_URL, Meeting) )
@@ -34,7 +33,7 @@ names(stocks2)[9] <- "Species"
 stocks2 <- subset(stocks2, select = -Species.y)
 
 # read assessment results from EWG 14-14
-ewg14_14 <- read.csv("summary_assessments_ewg14_14_V2.csv")
+ewg14_14 <- read.csv("input_data/summary_assessments_ewg14_14_V2.csv")
 
 names(ewg14_14)<-c("Year", "value", "variable", "Meeting", "Stock", "Fmsy", "Fref", "GSA", "Method","Assessment_URL")
 
@@ -70,21 +69,12 @@ temp3 <- temp2[!temp2$key %in% obs,]
 # Calculate
 temp3$F_Fmsy <- temp3$F / temp3$Fmsy
 
-species_groups_codes <- read.csv("species_groups_codes.csv", sep=";")
+species_groups_codes <- read.csv("input_data/species_groups_codes.csv", sep=";")
 
 temp3 <- merge(temp3, species_groups_codes, by.x="Stock", by.y="code", all.x=TRUE)
 temp3$GSA <- as.character(temp3$GSA)
 temp3$GSA <- ifelse(temp3$GSA=="dic-16","12_16", temp3$GSA)
 temp3$GSA <- as.factor(temp3$GSA)
-
-ggplot(temp3, aes(Year, F_Fmsy, color=Stock))+geom_point()+facet_grid(GSA~.)
-#ggsave(last_plot(), file=paste("plots/F_Fmsy_time_series",Sys.Date(),".png"), width=9, height=6, dpi=300)
-
-ggplot(temp3, aes(Year, SSB, color=Stock))+geom_point()+facet_grid(GSA~., scales="free_y")
-
-
-# explore trends in stock groups
-
 
 #========================================================================================
 
@@ -92,7 +82,7 @@ ggplot(temp3, aes(Year, SSB, color=Stock))+geom_point()+facet_grid(GSA~., scales
 
 
 #rm(list=ls())
-setwd("C:/CFP monitoring indicators/STECF assessments/assessment outputs summary CFP")
+setwd("input_data/assessment_outputs_summary_CFP")
 
 stock_files <- list.files(pattern=".Rdata", ignore.case = TRUE)
 stocks <- list()
@@ -155,14 +145,14 @@ stk_summary$.id <- ifelse(stk_summary$.id == "DPS_1719_EWG16_19", "DPS_1719_EWG1
   stk_summaryW <- dcast(stk_summary, .id + Area + Meeting+ Stock + year  ~ measure, value.var="data") 
 
   # bring in Reference points
-  ref_points <- read.csv("C:/CFP monitoring indicators/Stocks_stecf_ReferencePoints_01_2016_v4.csv")
+  ref_points <- read.csv("../Stocks_stecf_ReferencePoints_01_2016_v4.csv")
   ref_points$Meeting <- as.character(ref_points$Meeting)
   
   stk_summaryW2 <- merge( stk_summaryW, ref_points, by.x=c("Stock", "Area", "Meeting"), 
                           by.y = c("Stock", "GSA", "Meeting"), all.x = TRUE)
   
   
-  asfis <- read.csv("C:/CFP monitoring indicators/ASFIS 6 languages_2015.csv")
+  asfis <- read.csv("../ASFIS 6 languages_2015.csv")
   
   # Merge with asfis species
  # stk_summaryW3 <-  merge(stk_summaryW2, asfis[, 3:5], by.x = c("Stock","Species"), 
@@ -186,15 +176,12 @@ stk_summary$.id <- ifelse(stk_summary$.id == "DPS_1719_EWG16_19", "DPS_1719_EWG1
   names(temp3_sub)[names(temp3_sub)=="Year"] <- "year"
   
   temp3_sub $ Meeting_comments <- NA
-  #temp3_sub $ Scientific_name <- NA
   temp3_sub $ Blim <- NA
-  #temp3_sub $ Assessment_URL <- NA
   
   temp3_sub <-  merge(temp3_sub, asfis[, 3:5], by.x = "Stock", by.y = "X3A_CODE", all.x =TRUE)
   
   
   # Match names in new assessments
-  #names(temp3)[names(temp3)=="Fref"] <- "ref_point"
   names(stk_summaryW2)[names(stk_summaryW2)==".id"] <- "key"
   names(stk_summaryW2)[names(stk_summaryW2)=="ssb"] <- "SSB"
   names(stk_summaryW2)[names(stk_summaryW2)=="rec"] <- "R"
@@ -203,12 +190,9 @@ stk_summary$.id <- ifelse(stk_summary$.id == "DPS_1719_EWG16_19", "DPS_1719_EWG1
   names(stk_summaryW2)[names(stk_summaryW2)=="Fref"] <- "ref_point"
   names(stk_summaryW2)[names(stk_summaryW2)=="Fmsy"] <- "Fref"
   
-  sort(names(stk_summaryW2))
-  sort(names(temp3_sub))
   
   # Combine two pieces of data
   cfp2015 <- rbind(temp3_sub, stk_summaryW2)
-  #cfp2015 <- cfp2015[,!cfp2015$Species]
   
  # Create Assessment Year Variable
   cfp2015 <-   ddply(cfp2015, .(key),  function(x) {
@@ -217,21 +201,16 @@ stk_summary$.id <- ifelse(stk_summary$.id == "DPS_1719_EWG16_19", "DPS_1719_EWG1
   return(x)
   })
 
- 
-# Remove outdated assessments  
+# END DATA PREPARATION
   
-#  table(cfp2015$Species, cfp2015$Area)
+#====================================================================================== 
+# Remove outdated assessments  
   
   # remove Black Sea (area 29)
   #cfp2015$Area <- as.character(cfp2015$Area)
   #cfp2015 <- cfp2015[!cfp2015$Area=="29",] 
   
-  # remove meeting EWG 15-16
-  cfp2015$Meeting <- as.character(cfp2015$Meeting)
-  cfp2015 <- cfp2015[!cfp2015$Meeting == "EWG15_16",] 
   
-  #write.csv(data.frame(table(cfp2015$key, cfp2015$Area)), file = "AssessmentTable.csv")
-
   # remove outdated assessment
   # remove stock assessments that are obsolete or replaced by new area aggregations     
   
