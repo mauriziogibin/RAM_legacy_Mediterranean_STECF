@@ -70,7 +70,7 @@ med <- cfp2015
 names(med)
 
 # reconcile GSA with country
-area_table <- read.csv("FAO_GFCM_GSAconversionTable2.csv")
+area_table <- read.csv("../../FAO_GFCM_GSAconversionTable2.csv")
 
 temp1 <- merge(med, area_table, by.x="Area", by.y ="GSA", all.x=TRUE)
 
@@ -79,12 +79,10 @@ temp1 <- temp1[!(temp1$key == "HKE_07_EWG14_14") ,]
 
 # fix species namings and groupings
 
-species <- read.csv("C:/ram_med/ASFIS_species.csv")
+asfis <- read.csv("../../ASFIS_species.csv")
 
-sort(names(temp1))
-names(species)
 
-temp2 <- merge(temp1 , species, 
+temp2 <- merge(temp1 , asfis, 
                by.x=c("Stock", "Scientific_name"), by.y= c("X3A_CODE", "Scientific_name"), 
                all.x = TRUE)
 
@@ -136,7 +134,7 @@ temp2 $ ordername <- tolower(temp2$ordername)
 temp2$F_Fmsy <- temp2$F / temp2$Fref 
 
 temp2 $ recorder <- rep("Giacomo Chato Osio", length(temp2$year))
-temp2 $ daterecorded <- rep("2016-03-01", length(temp2$year))
+temp2 $ daterecorded <- rep("2016-05-15", length(temp2$year))
 temp2 $ assessContact <- rep("Giacomo Chato Osio", length(temp2$year))
 
 # Assessment information
@@ -161,11 +159,9 @@ temp2 $ assesscat <- ifelse( temp2$ assessmethod == "SS3", "Integrated Analysis"
 
 temp2 $ stocklong <- paste(temp2 $ commonname, " ", temp2 $ areaid, " GSA =", temp2 $ areacode )
 
+#save(temp2, file = "C:/ram_med/workspace/Mediterranean_RAM_AllStocks_03_03_2016.RData")
 
-save(temp2, file = "C:/ram_med/workspace/Mediterranean_RAM_AllStocks_03_03_2016.RData")
-
-
-unique(paste(temp2$stockid, temp2$ref_point))
+#unique(paste(temp2$stockid, temp2$ref_point))
 
 med_units <- data.frame(stock = unique(paste(temp2$stockid, temp2$assessmethod, sep=" ")),
           R =   rep(NA, length(unique(paste(temp2$stockid, temp2$assessmethod)))),
